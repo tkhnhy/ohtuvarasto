@@ -2,7 +2,6 @@ class Varasto:
     def __init__(self, tilavuus, alku_saldo = 0):
         self.tilavuus = max(0.0, tilavuus)
         self.saldo = min(max(0.0, alku_saldo), self.tilavuus)
-    #Todella pitkä kommentti jotta pylint huomauttaa yli kahdeksankymmenen merkin rajan ylittämisestä!
     # huom: ominaisuus voidaan myös laskea.
     def paljonko_mahtuu(self):
         return self.tilavuus - self.saldo
