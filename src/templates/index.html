@@ -16,7 +16,8 @@
                 <small>Saldo: {{ "%.1f"|format(wh.varasto.saldo) }} / {{ "%.1f"|format(wh.varasto.tilavuus) }}</small>
                 <div class="progress-bar">
                     {% set fill_percent = (wh.varasto.saldo / wh.varasto.tilavuus * 100) if wh.varasto.tilavuus > 0 else 0 %}
-                    <div class="progress-fill" style="width: {{ fill_percent }}%"></div>
+                    {% set is_full = wh.varasto.paljonko_mahtuu() == 0 %}
+                    <div class="progress-fill{% if is_full %} full{% endif %}" style="width: {{ fill_percent }}%"></div>
                 </div>
             </div>
             <div class="warehouse-actions">

@@ -84,9 +84,10 @@
         .warehouse-item {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             padding: 15px;
             border-bottom: 1px solid #eee;
+            gap: 20px;
         }
         .warehouse-item:last-child {
             border-bottom: none;
@@ -97,6 +98,7 @@
         .warehouse-actions {
             display: flex;
             gap: 10px;
+            padding-top: 5px;
         }
         .inline-form {
             display: inline;
@@ -112,6 +114,9 @@
             background-color: #28a745;
             height: 100%;
             transition: width 0.3s ease;
+        }
+        .progress-fill.full {
+            background-color: #dc3545;
         }
         nav {
             margin-bottom: 20px;
