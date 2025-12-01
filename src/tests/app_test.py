@@ -61,7 +61,7 @@ class TestApp(unittest.TestCase):
             'alku_saldo': '0'
         })
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Invalid capacity', response.data)
+        self.assertIn(b'Invalid capacity or initial balance', response.data)
 
     def test_view_warehouse(self):
         """Test viewing a warehouse."""
