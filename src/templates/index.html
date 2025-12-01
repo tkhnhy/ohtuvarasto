@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Varastot{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Varastot</h1>
+    
+    {% if warehouses %}
+    <ul class="warehouse-list">
+        {% for id, wh in warehouses.items() %}
+        <li class="warehouse-item">
+            <div class="warehouse-info">
+                <strong>{{ wh.name }}</strong>
+                <br>
+                <small>Saldo: {{ "%.1f"|format(wh.varasto.saldo) }} / {{ "%.1f"|format(wh.varasto.tilavuus) }}</small>
+                <div class="progress-bar">
+                    {% set fill_percent = (wh.varasto.saldo / wh.varasto.tilavuus * 100) if wh.varasto.tilavuus > 0 else 0 %}
+                    <div class="progress-fill" style="width: {{ fill_percent }}%"></div>
+                </div>
+            </div>
+            <div class="warehouse-actions">
+                <a href="{{ url_for('view_warehouse', warehouse_id=id) }}" class="btn">Näytä</a>
+                <a href="{{ url_for('edit_warehouse', warehouse_id=id) }}" class="btn btn-warning">Muokkaa</a>
+                <form action="{{ url_for('delete_warehouse', warehouse_id=id) }}" method="post" class="inline-form" onsubmit="return confirm('Haluatko varmasti poistaa tämän varaston?');">
+                    <button type="submit" class="btn btn-danger">Poista</button>
+                </form>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Ei varastoja. <a href="{{ url_for('create_warehouse') }}">Luo ensimmäinen varasto</a>.</p>
+    {% endif %}
+</div>
+
+<div class="container">
+    <a href="{{ url_for('create_warehouse') }}" class="btn btn-success">Luo uusi varasto</a>
+</div>
+{% endblock %}
