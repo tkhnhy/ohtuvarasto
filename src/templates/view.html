@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}{{ warehouse.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ warehouse.name }}</h1>
+    
+    <div class="warehouse-info">
+        <p><strong>Saldo:</strong> {{ "%.1f"|format(warehouse.varasto.saldo) }}</p>
+        <p><strong>Tilavuus:</strong> {{ "%.1f"|format(warehouse.varasto.tilavuus) }}</p>
+        <p><strong>Tilaa jäljellä:</strong> {{ "%.1f"|format(warehouse.varasto.paljonko_mahtuu()) }}</p>
+        
+        <div class="progress-bar">
+            {% set fill_percent = (warehouse.varasto.saldo / warehouse.varasto.tilavuus * 100) if warehouse.varasto.tilavuus > 0 else 0 %}
+            {% set is_full = warehouse.varasto.paljonko_mahtuu() == 0 %}
+            <div class="progress-fill{% if is_full %} full{% endif %}" style="width: {{ fill_percent }}%"></div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Lisää sisältöä</h2>
+    <form method="post" action="{{ url_for('add_content', warehouse_id=warehouse.id) }}" style="display: flex; gap: 10px; align-items: flex-end;">
+        <div class="form-group" style="margin-bottom: 0; flex-grow: 1;">
+            <label for="add_amount">Määrä:</label>
+            <input type="number" id="add_amount" name="amount" step="0.1" min="0" value="1" required>
+        </div>
+        <button type="submit" class="btn btn-success">Lisää</button>
+    </form>
+</div>
+
+<div class="container">
+    <h2>Poista sisältöä</h2>
+    <form method="post" action="{{ url_for('remove_content', warehouse_id=warehouse.id) }}" style="display: flex; gap: 10px; align-items: flex-end;">
+        <div class="form-group" style="margin-bottom: 0; flex-grow: 1;">
+            <label for="remove_amount">Määrä:</label>
+            <input type="number" id="remove_amount" name="amount" step="0.1" min="0" value="1" required>
+        </div>
+        <button type="submit" class="btn btn-warning">Poista</button>
+    </form>
+</div>
+
+<div class="container">
+    <a href="{{ url_for('edit_warehouse', warehouse_id=warehouse.id) }}" class="btn btn-warning">Muokkaa varastoa</a>
+    <form action="{{ url_for('delete_warehouse', warehouse_id=warehouse.id) }}" method="post" class="inline-form" style="display: inline;" onsubmit="return confirm('Haluatko varmasti poistaa tämän varaston?');">
+        <button type="submit" class="btn btn-danger">Poista varasto</button>
+    </form>
+    <a href="{{ url_for('index') }}" class="btn">Takaisin</a>
+</div>
+{% endblock %}
